@@ -2,35 +2,22 @@
 @use '../../styles/util/' as u1;
 
 
-
-.test1 {
-    @include u1.media(">=desktop") {
-        background-color: yellow;
-
-        &::after {
-            content: "desktop"
-        }
-    }
-    @include u1.media(">=tablet", "<desktop") {
-        background-color: skyblue;
-
-        &::after {
-            content: "tablet"
-        }
-    }
-
-    @include u1.media(">=phone", "<tablet") {
-        background-color: aquamarine;
-
-        &::after {
-            content: "phone"
-        }
-    }
-}
-
 body {
-    background-color: #1F2326 !important;
+    background-color: #0f100e !important;
+    color: #00b8bc;
 }
 .AppMain {
     @include u1.block_display();
+
+    .AppHero {
+        display: flex;
+        justify-content: space-around;
+        margin: 150px 0 0 0;
+        position: inherit;
+        font-size: 300px;
+
+        div {
+            position: inherit;
+        }
+    }
 }
