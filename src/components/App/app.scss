@@ -8,16 +8,44 @@ body {
 }
 .AppMain {
     @include u1.block_display();
+    .indicator {
+        display: block;
+        position: fixed;
+        z-index: 10;
+        width: 100vw;
+        height: 10px;
+        background-color: #f100a4;
+    }
 
     .AppHero {
         display: flex;
         justify-content: space-around;
-        margin: 150px 0 0 0;
+        margin: 200px 0;
         position: inherit;
-        font-size: 300px;
+        font-size: 280px;
+        font-weight: 900;
 
         div {
             position: inherit;
+        }
+    }
+
+    .AppImg {
+        display: flex;
+        position: relative;
+        justify-content: space-around;
+        margin: 150px 0;
+
+        > div {
+            display: flex;
+            align-items: center;
+            width: 27%;
+            height: 615px;
+            box-shadow: 5px 8px 10px rgba(253, 253, 205, .1), -5px -8px 10px rgba(253, 253, 205, .05);
+
+            img {
+                max-width: 100%;
+            }
         }
     }
 }
