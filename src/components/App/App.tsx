@@ -10,7 +10,18 @@ import img2 from '../../assets/2.jpg'
 
 
 const t1 = 'STANLEY'.split('');
-console.log(t1)
+const t2 = 'PARALLAX'.split('');
+
+const TxtComp = ({item}: {item:string}) => {
+    return  <div className="">{item}</div>
+}
+
+const ImgComp = ({img}: {img:string}) => {
+    return <div className=""><img src={img} alt="" /></div>
+}
+
+
+
 const App = () => {
     const {scrollYProgress} = useScroll()
     const indicatorX = useSpring(scrollYProgress, {mass: 0.1})
@@ -22,23 +33,19 @@ const App = () => {
             <div className="AppHero">
                 {
                     t1.map((item:string, index:number) => {
-                        return (
-                            <div className="" key={`${item}-${index}`}>{item}</div>
-                        )
+                        return <TxtComp key={`${item}-${index}`} item={item} />
                     })
                 }
             </div>
             <div className="AppImg">
-                <div className=""><img src={img0} alt="" /></div>
-                <div className=""><img src={img1} alt="" /></div>
-                <div className=""><img src={img2} alt="" /></div>
+                <ImgComp img={img0} />
+                <ImgComp img={img1} />
+                <ImgComp img={img2} />
             </div>
             <div className="AppHero">
                 {
-                    t1.map((item:string, index:number) => {
-                        return (
-                            <div className="" key={`${item}-${index}`}>{item}</div>
-                        )
+                    t2.map((item:string, index:number) => {
+                        return <TxtComp key={`${item}-${index}`} item={item} />
                     })
                 }
             </div>
