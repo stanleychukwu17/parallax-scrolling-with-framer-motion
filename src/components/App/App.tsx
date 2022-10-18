@@ -1,6 +1,6 @@
 import './app.scss';
-import { useEffect, useRef } from 'react';
-import { motion, useScroll, useSpring, useInView, useTransform} from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useSpring, useTransform} from 'framer-motion';
 // import { gsap } from 'gsap'; 
 
 // import of assets
@@ -17,6 +17,7 @@ const t1 = 'STANLEY'.split('');
 const t1Length = Math.floor(t1.length / 2) - 1
 const t2 = 'PARALLAX'.split('');
 const t2Length = Math.floor(t2.length / 2) - 1
+const t3 = 'DESIGN.'.split('');
 
 
 const TxtComp = ({item, speed}: {item:string, speed:number}) => {
@@ -25,20 +26,35 @@ const TxtComp = ({item, speed}: {item:string, speed:number}) => {
         target: ref,
         offset: ["0 end", "end start"]
     })
-    const moveY = useTransform(scrollYProgress, [0, .5, 1], [0, 50, 100 * speed])
+    const moveY = useTransform(scrollYProgress, [0, .5, 1], [0, 5*speed, 100 * speed])
 
     return  <motion.div style={{y:moveY}} ref={ref}>{item}</motion.div>
 }
 
 const ImgComp = ({img, speed}: {img:string, speed:number}) => {
+    let useY
     const ref = useRef<HTMLDivElement>(null)
     const {scrollYProgress} = useScroll({
         target: ref,
         offset: ["0 end", "end start"]
     })
-    const moveY = useTransform(scrollYProgress, [0, .5, 1], [0, 50, 100 * speed])
 
-    return <motion.div style={{y:moveY}} ref={ref}><img src={img} alt="" /></motion.div>
+    const moveDef = useTransform(scrollYProgress, [0, .5, 1], [0, 5, 100 * speed])
+    const moveDwn = useTransform(scrollYProgress, [0, .5, 1], [0, 5, 100 * 7])
+    const moveLeft = useTransform(scrollYProgress, [0, .5, 1], ['0%', '50%', '100%'])
+    const moveRUp = useTransform(scrollYProgress, [0, 1], [0, 100 * 4])
+    const moveRight = useTransform(scrollYProgress, [0, .5, 1], ['-0%', '-50%', '-100%'])
+    const scale = useTransform(scrollYProgress, [0, .7, 1], [1, .9, .8])
+
+    if (speed === -11) {
+        useY = {y:moveDwn, x:moveLeft, scale}
+    } else if (speed === -12) {
+        useY = {y:moveRUp, x:moveRight, scale}
+    } else {
+        useY = {y:moveDef}
+    }
+
+    return <motion.div style={useY} ref={ref}><img src={img} alt="" /></motion.div>
 }
 
 
@@ -46,10 +62,12 @@ const ImgComp = ({img, speed}: {img:string, speed:number}) => {
 const App = () => {
     const {scrollYProgress} = useScroll()
     const indicatorX = useSpring(scrollYProgress, {mass: 0.1})
+    const bg = useTransform(scrollYProgress, [0, .3, 1], ['#000','#000', '#fff'])
+    const color = useTransform(scrollYProgress, [0, .6, .7, 1], ['#fff','#fff', '#000', '#000'])
     
 
     return (
-        <div className="AppMain">
+        <motion.div className="AppMain" style={{backgroundColor: bg}}>
             <motion.div className="indicator" style={{scaleX: indicatorX, originX: 0}}></motion.div>
             <div className="AppHero">
                 {
@@ -63,19 +81,31 @@ const App = () => {
                 <ImgComp speed={6} img={img1} />
                 <ImgComp speed={2} img={img2} />
             </div>
-            <div className="AppHero">
+            <motion.div className="AppHero" style={{color}}>
                 {
                     t2.map((item:string, index:number) => {
                         return <TxtComp key={`${item}-${index}`} item={item} speed={index - t2Length} />
                     })
                 }
-            </div>
+            </motion.div>
             <div className="AppImg">
-                <ImgComp speed={-4} img={img4} />
+                <ImgComp speed={-11} img={img4} />
                 <ImgComp speed={6} img={img5} />
-                <ImgComp speed={-4} img={img6} />
+                <ImgComp speed={-12} img={img6} />
             </div>
-        </div>
+            <motion.div className="AppHero" style={{color}}>
+                {
+                    t3.map((item:string, index:number) => {
+                        return <TxtComp key={`${item}-${index}`} item={item} speed={1} />
+                    })
+                }
+            </motion.div>
+            <div className="AppImg">
+                <ImgComp speed={-1} img={img4} />
+                <ImgComp speed={3} img={img5} />
+                <ImgComp speed={-1} img={img6} />
+            </div>
+        </motion.div>
     )
 }
 export default App;
