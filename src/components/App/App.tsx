@@ -12,7 +12,7 @@ import img5 from '../../assets/5.jpg'
 import img6 from '../../assets/6.jpg'
 
 
-// const t1 = 'S'.split('');
+// i had to split each text to allow for better parallax effect of each letter
 const t1 = 'STANLEY'.split('');
 const t1Length = Math.floor(t1.length / 2) - 1
 const t2 = 'PARALLAX'.split('');
@@ -20,13 +20,14 @@ const t2Length = Math.floor(t2.length / 2) - 1
 const t3 = 'DESIGN.'.split('');
 
 
+// the Component for each of the text
 const TxtComp = ({item, speed}: {item:string, speed:number}) => {
     const ref = useRef<HTMLDivElement>(null)
     const {scrollYProgress} = useScroll({
-        target: ref,
-        offset: ["0 end", "end start"]
+        target: ref, // i only want the parallax effect to kick off once the items are on screen
+        offset: ["0 end", "end start"] // check framer-motion doc for more explanation on offset
     })
-    const moveY = useTransform(scrollYProgress, [0, .5, 1], [0, 5*speed, 100 * speed])
+    const moveY = useTransform(scrollYProgress, [0, .5, 1], [0, 5*speed, 100 * speed]) 
 
     return  <motion.div style={{y:moveY}} ref={ref}>{item}</motion.div>
 }
@@ -42,7 +43,7 @@ const ImgComp = ({img, speed}: {img:string, speed:number}) => {
     const moveDef = useTransform(scrollYProgress, [0, .5, 1], [0, 5, 100 * speed])
     const moveDwn = useTransform(scrollYProgress, [0, .5, 1], [0, 5, 100 * 7])
     const moveLeft = useTransform(scrollYProgress, [0, .5, 1], ['0%', '50%', '100%'])
-    const moveRUp = useTransform(scrollYProgress, [0, 1], [0, 100 * 4])
+    const moveRUp = useTransform(scrollYProgress, [0, .5, 1], [0, -30 * 1, 100 * 5.5])
     const moveRight = useTransform(scrollYProgress, [0, .5, 1], ['-0%', '-50%', '-100%'])
     const scale = useTransform(scrollYProgress, [0, .7, 1], [1, .9, .8])
 
@@ -101,9 +102,9 @@ const App = () => {
                 }
             </motion.div>
             <div className="AppImg">
-                <ImgComp speed={-1} img={img4} />
-                <ImgComp speed={3} img={img5} />
-                <ImgComp speed={-1} img={img6} />
+                <ImgComp speed={8} img={img4} />
+                <ImgComp speed={-5} img={img5} />
+                <ImgComp speed={5} img={img6} />
             </div>
         </motion.div>
     )
