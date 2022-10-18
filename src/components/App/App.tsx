@@ -1,5 +1,6 @@
 import './app.scss';
-// import { motion } from 'framer-motion';
+// import { useEffect } from 'react'; useTransform
+import { motion, useScroll, useSpring} from 'framer-motion';
 // import { gsap } from 'gsap';
 
 // import of assets
@@ -11,10 +12,13 @@ import img2 from '../../assets/2.jpg'
 const t1 = 'STANLEY'.split('');
 console.log(t1)
 const App = () => {
+    const {scrollYProgress} = useScroll()
+    const indicatorX = useSpring(scrollYProgress, {mass: 0.1})
+    
 
     return (
         <div className="AppMain">
-            <div className="indicator"></div>
+            <motion.div className="indicator" style={{scaleX: indicatorX, originX: 0}}></motion.div>
             <div className="AppHero">
                 {
                     t1.map((item:string, index:number) => {
