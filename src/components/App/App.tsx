@@ -18,7 +18,6 @@ const t1Length = Math.floor(t1.length / 2) - 1
 const t2 = 'PARALLAX'.split('');
 const t2Length = Math.floor(t2.length / 2) - 1
 
-console.log({t1Length, t2Length})
 
 const TxtComp = ({item, speed}: {item:string, speed:number}) => {
     const ref = useRef<HTMLDivElement>(null)
@@ -28,15 +27,18 @@ const TxtComp = ({item, speed}: {item:string, speed:number}) => {
     })
     const moveY = useTransform(scrollYProgress, [0, .5, 1], [0, 50, 100 * speed])
 
-    scrollYProgress.onChange(latest => {
-        console.log({latest, moveY: moveY.get()})
-    })
-
-    return  <motion.div className="" style={{y:moveY}} ref={ref}>{item}</motion.div>
+    return  <motion.div style={{y:moveY}} ref={ref}>{item}</motion.div>
 }
 
-const ImgComp = ({img}: {img:string}) => {
-    return <div className=""><img src={img} alt="" /></div>
+const ImgComp = ({img, speed}: {img:string, speed:number}) => {
+    const ref = useRef<HTMLDivElement>(null)
+    const {scrollYProgress} = useScroll({
+        target: ref,
+        offset: ["0 end", "end start"]
+    })
+    const moveY = useTransform(scrollYProgress, [0, .5, 1], [0, 50, 100 * speed])
+
+    return <motion.div style={{y:moveY}} ref={ref}><img src={img} alt="" /></motion.div>
 }
 
 
@@ -57,9 +59,9 @@ const App = () => {
                 }
             </div>
             <div className="AppImg">
-                <ImgComp img={img0} />
-                <ImgComp img={img1} />
-                <ImgComp img={img2} />
+                <ImgComp speed={2} img={img0} />
+                <ImgComp speed={6} img={img1} />
+                <ImgComp speed={2} img={img2} />
             </div>
             <div className="AppHero">
                 {
@@ -69,9 +71,9 @@ const App = () => {
                 }
             </div>
             <div className="AppImg">
-                <ImgComp img={img4} />
-                <ImgComp img={img5} />
-                <ImgComp img={img6} />
+                <ImgComp speed={-4} img={img4} />
+                <ImgComp speed={6} img={img5} />
+                <ImgComp speed={-4} img={img6} />
             </div>
         </div>
     )
